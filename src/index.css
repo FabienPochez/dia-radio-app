@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-mono; /* Default to Azeret Mono for general text */
+}
+
+h1, h2, h3, h4, h5, h6, nav, button {
+  @apply font-sans; /* Use Inter for headings and UI */
+}
