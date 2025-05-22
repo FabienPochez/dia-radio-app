@@ -30,7 +30,6 @@ export function usePlayer() {
   }
 
   function play(src, title, mode = 'podcast', cover = '') {
-    console.log('🔥 PLAY called:', { src, title, mode, cover })
 
     const isNewStream = audioRef.value.src !== src
 
@@ -43,7 +42,6 @@ export function usePlayer() {
       state.current.mode = mode
       state.current.cover = cover
       audioRef.value.play()
-      console.log('🎯 Now playing (podcast):', state.current)
     }
 
     if (mode === 'live') {
@@ -55,7 +53,6 @@ export function usePlayer() {
       state.current.src = src
       state.current.mode = mode
       state.current.cover = cover
-      console.log('🎯 Now playing (live):', state.current)
     }
 
     state.isPlaying = true
@@ -78,7 +75,6 @@ function setDefaultLive() {
   state.current.src = 'https://play.radioking.io/dia-radio/446203'
   state.current.mode = 'live'
   state.current.cover = ''
-  console.log('⚡ Default live set:', state.current)
 }
 
 
