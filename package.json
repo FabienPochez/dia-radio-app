@@ -8,6 +8,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/cli": "^7.2.0",
+    "@capacitor/core": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
     "@fontsource/azeret-mono": "^5.2.7",
     "@fontsource/inter": "^5.2.5",
     "lucide-vue-next": "^0.511.0",

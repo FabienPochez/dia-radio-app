@@ -1,0 +1,6 @@
+{
+  "appId": "live.diaradio",
+  "appName": "DIA! Radio",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

@@ -1,5 +1,7 @@
-node_modules/
-dist/
+node_modules
+dist
+ios
+android
 .vscode/
 .env
 .DS_Store

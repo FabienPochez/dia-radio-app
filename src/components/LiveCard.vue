@@ -1,7 +1,7 @@
 
 
 <template>
-  <div class="px-4 py-4 max-w-4xl mx-auto">
+  <div class="px-8 py-4 max-w-4xl mx-auto">
     <!-- LIVE NOW label -->
     <div class="flex items-center space-x-2 mb-4">
       <span class="h-4 w-4 text-2xl rounded-full bg-red animate-pulse"></span>

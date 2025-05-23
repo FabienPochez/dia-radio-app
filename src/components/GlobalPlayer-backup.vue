@@ -1,15 +1,15 @@
 <template>
-  <div class="w-full h-[110px] bg-black text-white px-4 py-3 border-t border-zinc-800 flex items-center gap-3">
+  <div class="w-full h-[60px] bg-black text-white border-t border-b border-white flex items-center gap-3">
     <!-- Cover Image -->
     <img
       :src="current.mode === 'live' ? liveMeta.cover : current.cover || '/img/fallback-live.jpg'"
-      class="w-14 h-14 object-cover rounded"
+      class="w-[58px] h-[58px] object-cover"
       alt="Cover"
     />
 
     <!-- Track Info -->
     <div class="flex-1 overflow-hidden">
-      <p class="font-bold text-sm truncate">
+      <p class="font-semibold text-sm truncate">
         {{ current.mode === 'live' ? liveMeta.title : current.title || 'Podcast Episode' }}
       </p>
       <p class="text-xs text-gray-400 flex items-center gap-1">
@@ -18,14 +18,12 @@
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
           </span>
-          Live on Dia!
+          Playing on Dia!
         </template>
-        <template v-else>
-          Podcast Episode
-        </template>
+
       </p>
       <!-- Timeline -->
-      <div v-if="current.mode === 'podcast'" class="mt-1">
+      <div v-if="current.mode === 'podcast'" class="">
         <input
           type="range"
           min="0"
@@ -33,29 +31,29 @@
           step="0.1"
           :value="currentTime"
           @input="onSliderChange"
-          class="w-full"
+          class="w-full appearance-none bg-light-blue h-[2px] rounded outline-none
+         [&::-webkit-slider-thumb]:appearance-none
+         [&::-webkit-slider-thumb]:w-3
+         [&::-webkit-slider-thumb]:h-3
+         [&::-webkit-slider-thumb]:bg-pink
+         [&::-webkit-slider-thumb]:rounded-full
+         [&::-webkit-slider-thumb]:cursor-pointer
+         [&::-moz-range-thumb]:bg-pink
+         [&::-moz-range-thumb]:w-3
+         [&::-moz-range-thumb]:h-3
+         [&::-moz-range-thumb]:rounded-full"
         />
-        <div class="text-xs text-gray-400 mt-1">
+        <div class="text-xs text-gray-400 ">
           {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
         </div>
       </div>
     </div>
 
     <!-- Play/Pause Button -->
-    <button
-      v-if="current.mode === 'live'"
-      @click="toggleLivePlayback"
-      class="text-white text-xs bg-red-600 px-3 py-1 rounded hover:bg-red-500"
-    >
-      {{ isPlaying ? 'Pause' : 'Play' }} Live
-    </button>
-    <button
-      v-else
-      @click="togglePodcastPlayback"
-      class="text-white text-xs bg-blue-600 px-3 py-1 rounded hover:bg-blue-500"
-    >
-      {{ isPlaying ? 'Pause' : 'Play' }} Podcast
-    </button>
+    <PlayPauseButton class="w-[58px] h-[58px]"
+      :isPlaying="isPlaying"
+      :onToggle="current.mode === 'live' ? toggleLivePlayback : togglePodcastPlayback"
+    />
   </div>
   <audio ref="audioRef" :src="current.src" preload="auto" class="hidden" autoplay />
 </template>
@@ -63,6 +61,7 @@
 <script setup>
 import { ref, watch, onUnmounted, onMounted } from 'vue'
 import { usePlayer, audioRef } from '../composables/usePlayer'
+import PlayPauseButton from './PlayPauseButton.vue'
 
 const { current, isPlaying, play, pause } = usePlayer()
 

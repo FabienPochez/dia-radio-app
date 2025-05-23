@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onUnmounted, onMounted } from 'vue'
+import { ref, watch, onUnmounted, onMounted, watchEffect } from 'vue'
 import { usePlayer, audioRef } from '../composables/usePlayer'
 import PlayPauseButton from './PlayPauseButton.vue'
 
@@ -106,6 +106,7 @@ function toggleLivePlayback() {
     pause()
   } else {
     play(current.src, liveMeta.value.title, 'live', liveMeta.value.cover)
+    updateMediaSession(liveMeta.value.title, 'Live on Dia!', liveMeta.value.cover)
   }
 }
 
@@ -114,6 +115,7 @@ function togglePodcastPlayback() {
     pause()
   } else {
     play(current.src, current.title, 'podcast', current.cover)
+    updateMediaSession(current.title, 'Podcast Episode', current.cover)
   }
 }
 
@@ -140,9 +142,33 @@ async function fetchLiveTrack() {
     const data = await res.json()
     liveMeta.value.title = data.title || 'Live on Dia!'
     liveMeta.value.cover = data.cover || '/img/fallback-live.jpg'
+
+    if (current.mode === 'live' && isPlaying.value) {
+      updateMediaSession(liveMeta.value.title, 'Live on Dia!', liveMeta.value.cover)
+    }
   } catch (e) {
     liveMeta.value.title = 'Live on Dia!'
     liveMeta.value.cover = '/img/fallback-live.jpg'
+  }
+}
+
+function updateMediaSession(title, artist, artworkUrl) {
+  if ('mediaSession' in navigator && audioRef.value) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title,
+      artist,
+      album: 'Dia Radio',
+      artwork: [
+        { src: artworkUrl, sizes: '512x512', type: 'image/jpeg' }
+      ]
+    })
+
+    navigator.mediaSession.setActionHandler('play', () => {
+      audioRef.value.play()
+    })
+    navigator.mediaSession.setActionHandler('pause', () => {
+      audioRef.value.pause()
+    })
   }
 }
 </script>

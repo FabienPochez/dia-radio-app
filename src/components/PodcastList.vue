@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 py-4 max-w-4xl mx-auto">
+  <div class="px-8 py-4 max-w-4xl mx-auto">
     <h2 class="text-2xl uppercase font-bold mb-4">Latest Shows</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
