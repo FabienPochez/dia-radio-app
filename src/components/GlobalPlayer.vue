@@ -129,6 +129,9 @@ watch(current, (newVal) => {
       title: 'Live on Dia!',
       cover: '/img/fallback-live.jpg'
     }
+    if (newVal?.mode === 'podcast' && isPlaying.value) {
+    updateMediaSession(newVal.title, 'Podcast Episode', newVal.cover)
+  }
   }
 })
 
