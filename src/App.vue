@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen pb-[160px] bg-zinc-950 text-white">
-    <div v-if="currentTab === 'live'" class="flex flex-col gap-4 p-4">
+  <div class="pt-24 pb-4 px-4 min-h-screen pb-[160px] bg-zinc-950 text-white">
+    <div v-if="currentTab === 'live'" class="flex flex-col gap-4">
       <LiveCard />
       <NextUp />
 
