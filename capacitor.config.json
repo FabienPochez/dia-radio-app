@@ -2,5 +2,9 @@
   "appId": "live.diaradio",
   "appName": "DIA! Radio",
   "webDir": "dist",
-  "bundledWebRuntime": false
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://dia-radio-app.vercel.app",
+    "cleartext": true
+  }
 }
