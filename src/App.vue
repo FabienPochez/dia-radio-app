@@ -1,19 +1,32 @@
 <template>
-  <div class="pt-24 pb-4 px-4 min-h-screen pb-[160px] bg-zinc-950 text-white">
-    <div v-if="currentTab === 'live'" class="flex flex-col gap-4">
-      <LiveCard />
-      <NextUp />
+  <div class="flex items-center justify-center min-h-screen bg-black text-white">
+    <div
+      class="relative w-full max-w-[430px] h-screen md:h-[90vh] md:rounded-[24px] md:border md:border-pink overflow-hidden flex flex-col bg-zinc-950 text-white shadow-xl"
+    >
+      <!-- Scrollable content area -->
+      <main class="flex-1 overflow-y-auto pt-[110px] px-4 pb-[140px]">
+        <div v-if="currentTab === 'live'" class="flex flex-col gap-4">
+          <LiveCard />
+          <NextUp />
+        </div>
+        <PodcastList v-if="currentTab === 'shows'" />
+        <About v-if="currentTab === 'about'" />
+      </main>
 
+      <!-- BottomNav (fixed at bottom) -->
+      <div class="absolute fixed bottom-0 left-0 w-full h-[80px] z-40">
+        <BottomNav :currentTab="currentTab" @update:tab="currentTab = $event" />
+      </div>
+
+      <!-- GlobalPlayer (above nav) -->
+      <div class="absolute fixed bottom-[80px] left-0 w-full z-50">
+        <GlobalPlayer />
+      </div>
     </div>
-    <PodcastList v-if="currentTab === 'shows'" />
-    <About v-if="currentTab === 'about'" />
   </div>
-
-  <footer class="fixed bottom-0 left-0 w-full z-50">
-    <GlobalPlayer />
-    <BottomNav :currentTab="currentTab" @update:tab="currentTab = $event" />
-  </footer>
 </template>
+
+
 
 <script setup>
 import { ref, onMounted } from 'vue'
