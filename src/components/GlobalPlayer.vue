@@ -55,7 +55,8 @@
       :onToggle="current.mode === 'live' ? toggleLivePlayback : togglePodcastPlayback"
     />
   </div>
-  <audio ref="audioRef" :src="current.src" preload="auto" class="hidden" autoplay />
+  <audio ref="audioRef" :src="current.src" preload="none" class="hidden" />
+
 </template>
 
 <script setup>
