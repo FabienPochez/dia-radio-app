@@ -18,15 +18,15 @@
 
 <script setup>
 import { shallowRef } from 'vue'
-import { HomeIcon, MusicIcon, InfoIcon } from 'lucide-vue-next'
+import { RadioIcon, CassetteTape, InfoIcon } from 'lucide-vue-next'
 
 const props = defineProps({
   currentTab: String
 })
 
 const tabs = shallowRef([
-  { id: 'live', label: 'Live', icon: HomeIcon },
-  { id: 'shows', label: 'Shows', icon: MusicIcon },
+  { id: 'live', label: 'Live', icon: RadioIcon },
+  { id: 'shows', label: 'Shows', icon: CassetteTape },
   { id: 'about', label: 'About', icon: InfoIcon }
 ])
 </script>
