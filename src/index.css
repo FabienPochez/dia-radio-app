@@ -20,3 +20,21 @@ h1, h2, h3, h4, h5, h6, nav, button {
 .safe-top-64 {
   padding-top: calc(env(safe-area-inset-top, 20px) + 64px);
 }
+/* Animated marquee for PodCast title in GlobalPlayer */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 16s linear infinite;
+  animation-delay: 1.5s;
+}
+
+/* Transition between Live Mode and Podcast Mode in GlobalPlayer */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
