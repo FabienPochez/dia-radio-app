@@ -13,13 +13,7 @@
       />
     </div>
 
-    <div
-  ref="scrollAnchor"
-  class="h-8 flex justify-center items-center transition-opacity duration-300"
-  :class="{ 'opacity-100': isLoading, 'opacity-0': !isLoading }"
->
-  <span class="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
-</div>
+    <div ref="scrollAnchor" class="h-2"></div>
   </div>
 </template>
 
