@@ -17,6 +17,6 @@ h1, h2, h3, h4, h5, h6, nav, button {
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 34px);
 }
-.safe-top-24 {
-  padding-top: calc(env(safe-area-inset-top, 20px) + 24px);
+.safe-top-32 {
+  padding-top: calc(env(safe-area-inset-top, 20px) + 32px);
 }

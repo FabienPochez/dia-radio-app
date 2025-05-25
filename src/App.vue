@@ -4,7 +4,7 @@
       class="relative w-full max-w-[430px] h-screen md:h-[90vh] md:rounded-[24px] md:border md:border-pink overflow-hidden flex flex-col bg-neutral-950 text-white shadow-xl"
     >
       <!-- Scrollable content area -->
-      <main class="flex-1 overflow-y-auto safe-area-top safe-top-24 px-6 pb-[140px]">
+      <main class="flex-1 overflow-y-auto safe-area-top safe-top-32 px-6 pb-[140px]">
         <div v-if="currentTab === 'live'" class="flex flex-col gap-4">
           <LiveCard />
           <NextUp />
