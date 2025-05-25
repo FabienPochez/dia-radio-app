@@ -64,7 +64,7 @@ import { ref, watch, onUnmounted, onMounted, watchEffect } from 'vue'
 import { usePlayer, audioRef } from '../composables/usePlayer'
 import PlayPauseButton from './PlayPauseButton.vue'
 
-const { current, isPlaying, play, pause } = usePlayer()
+const { current, isPlaying, play, pause, setSource } = usePlayer()
 
 const liveMeta = ref({
   title: 'Live on Dia!',
@@ -103,22 +103,34 @@ function formatTime(seconds) {
 }
 
 function toggleLivePlayback() {
-  if (isPlaying.value && current.mode === 'live') {
+  if (current.mode === 'live' && isPlaying.value) {
     pause()
   } else {
-    play(current.src, liveMeta.value.title, 'live', liveMeta.value.cover)
+    setAndPlay({
+      src: 'https://play.radioking.io/dia-radio/446203',
+      title: liveMeta.value.title,
+      mode: 'live',
+      cover: liveMeta.value.cover
+    })
     updateMediaSession(liveMeta.value.title, 'Live on Dia!', liveMeta.value.cover)
   }
 }
 
 function togglePodcastPlayback() {
-  if (isPlaying.value && current.mode === 'podcast') {
+  if (current.mode === 'podcast' && isPlaying.value) {
     pause()
   } else {
-    play(current.src, current.title, 'podcast', current.cover)
+    setAndPlay({
+      src: current.src,
+      title: current.title,
+      mode: 'podcast',
+      cover: current.cover
+    })
     updateMediaSession(current.title, 'Podcast Episode', current.cover)
   }
 }
+
+
 
 watch(current, (newVal) => {
   if (newVal?.mode === 'live') {

@@ -1,6 +1,6 @@
+// usePlayer.js
 import { reactive, readonly, ref } from 'vue'
 
-// 1. State
 const state = reactive({
   current: {
     title: '',
@@ -11,74 +11,86 @@ const state = reactive({
   isPlaying: false
 })
 
-// 2. Audio ref
 export const audioRef = ref(null)
 const isPlayingRef = ref(false)
 
-// 3. Core function
 export function usePlayer() {
   if (!audioRef.value) {
     audioRef.value = new Audio()
+    audioRef.value.preload = 'none'
+
     audioRef.value.onplay = () => {
       state.isPlaying = true
       isPlayingRef.value = true
     }
+
     audioRef.value.onpause = () => {
       state.isPlaying = false
       isPlayingRef.value = false
     }
   }
 
-  function play(src, title, mode = 'podcast', cover = '') {
+  async function setSource({ src, title, mode = 'podcast', cover = '' }) {
+    const isNewStream = audioRef.value.src !== src || state.current.mode !== mode
 
-    const isNewStream = audioRef.value.src !== src
-
-    if (mode === 'podcast') {
-     if (isNewStream) {
-      audioRef.value.src = src
-      }
-      state.current.title = title
-      state.current.src = src
-      state.current.mode = mode
-      state.current.cover = cover
-      audioRef.value.play()
-    }
-
-    if (mode === 'live') {
+    if (isNewStream) {
       audioRef.value.pause()
       audioRef.value.src = src
-      audioRef.value.load()
-      audioRef.value.play()
-      state.current.title = title
-      state.current.src = src
-      state.current.mode = mode
-      state.current.cover = cover
+      try {
+        await audioRef.value.load()
+      } catch (e) {
+        console.warn('Load interrupted or blocked:', e)
+      }
     }
 
-    state.isPlaying = true
-    isPlayingRef.value = true
+    state.current.title = title
+    state.current.src = src
+    state.current.mode = mode
+    state.current.cover = cover
+
+    state.isPlaying = false
+    isPlayingRef.value = false
+  }
+
+  async function play() {
+    try {
+      await audioRef.value.play()
+      state.isPlaying = true
+      isPlayingRef.value = true
+    } catch (err) {
+      console.warn('Play interrupted or blocked:', err)
+    }
   }
 
   function pause() {
     if (audioRef.value) {
       audioRef.value.pause()
+      state.isPlaying = false
+      isPlayingRef.value = false
+
       if (state.current.mode === 'live') {
         audioRef.value.currentTime = 0
       }
-      state.isPlaying = false
-      isPlayingRef.value = false
     }
   }
 
-function setDefaultLive() {
-  state.current.title = 'Dia! Live Radio'
-  state.current.src = 'https://play.radioking.io/dia-radio/446203'
-  state.current.mode = 'live'
-  state.current.cover = ''
-}
+  async function setAndPlay({ src, title, mode = 'podcast', cover = '' }) {
+    await setSource({ src, title, mode, cover })
+    await play()
+  }
 
+  function setDefaultLive() {
+    setSource({
+      title: 'Dia! Live Radio',
+      src: 'https://play.radioking.io/dia-radio/446203',
+      mode: 'live',
+      cover: ''
+    })
+  }
 
   return {
+    setSource,
+    setAndPlay,
     play,
     pause,
     current: readonly(state.current),

@@ -22,7 +22,7 @@ import { ref, onMounted } from 'vue'
 import { usePlayer } from '../composables/usePlayer'
 import PodcastCard from './PodcastCard.vue'
 
-const { play, pause, current, isPlaying } = usePlayer()
+const { current, isPlaying, pause, setAndPlay } = usePlayer()
 
 const items = ref([])
 const visibleItems = ref([])
@@ -58,9 +58,15 @@ function togglePodcast(podcast) {
   if (isPlaying.value && current.title === podcast.title) {
     pause()
   } else {
-    play(podcast.audioUrl, podcast.title, 'podcast', podcast.image)
+    setAndPlay({
+      src: podcast.audioUrl,
+      title: podcast.title,
+      mode: 'podcast',
+      cover: podcast.image || '/img/fallback-live.jpg'
+    })
   }
 }
+
 
 function loadMore() {
   const next = items.value.slice(loadedCount.value, loadedCount.value + batchSize)

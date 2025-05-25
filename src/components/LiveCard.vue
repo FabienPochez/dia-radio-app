@@ -72,7 +72,8 @@ const title = computed(() =>
 const timeRange = '10:00 – 12:00'
 
 const streamUrl = 'https://www.radioking.com/play/dia-radio/446203'
-const { play, pause, current, isPlaying } = usePlayer()
+const { setAndPlay, pause, current, isPlaying } = usePlayer()
+
 
 const isLivePlaying = computed(() =>
   isPlaying.value && current.mode === 'live'
@@ -84,8 +85,14 @@ function toggleLive() {
   if (isCurrentLive && isPlaying.value) {
     pause()
   } else {
-    play(streamUrl, title.value, 'live', coverImage.value)
+    setAndPlay({
+      src: streamUrl,
+      title: title.value,
+      mode: 'live',
+      cover: coverImage.value
+    })
   }
 }
+
 
 </script>
