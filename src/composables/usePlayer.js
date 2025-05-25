@@ -57,6 +57,7 @@ export function usePlayer() {
       await audioRef.value.play()
       state.isPlaying = true
       isPlayingRef.value = true
+      updateMediaSession()
     } catch (err) {
       console.warn('Play interrupted or blocked:', err)
     }
@@ -86,6 +87,27 @@ export function usePlayer() {
       mode: 'live',
       cover: ''
     })
+  }
+
+  function updateMediaSession() {
+    if ('mediaSession' in navigator) {
+      const { title, cover, mode } = state.current
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title,
+        artist: mode === 'podcast' ? 'Podcast Episode' : 'Live on Dia!',
+        album: 'DIA! Radio',
+        artwork: [
+          { src: cover || '/img/fallback-live.jpg', sizes: '512x512', type: 'image/jpeg' }
+        ]
+      })
+
+      navigator.mediaSession.setActionHandler('play', () => {
+        audioRef.value.play()
+      })
+      navigator.mediaSession.setActionHandler('pause', () => {
+        audioRef.value.pause()
+      })
+    }
   }
 
   return {
