@@ -3,7 +3,7 @@
     <h2 class="text-xl font-semibold mb-2">Live Stream</h2>
     <button
       @click="play(streamUrl, 'Dia! Live Radio', 'live')"
-      class="text-sm text-white bg-green-600 px-3 py-1 rounded hover:bg-green-500"
+      class="text-sm text-white bg-neutral-900 px-3 py-1 rounded hover:bg-green-500"
     >
       ▶️ Play Live Radio
     </button>

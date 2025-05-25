@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <div class="bg-white text-black overflow-hidden relative p-2">
+    <div class="bg-neutral-800 rounded-l text-white overflow-hidden relative p-3">
       <!-- Image wrapper with 4:3 ratio -->
       <div class="relative aspect-[3/2] w-full">
         <img

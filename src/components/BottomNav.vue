@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-around items-center bg-zinc-900 text-white pt-2 pb-8 border-t border-zinc-800">
+  <nav class="flex justify-around items-center bg-neutral-900 text-white pt-2 pb-8 border-t border-pink">
     <button
       v-for="tab in tabs"
       :key="tab.id"

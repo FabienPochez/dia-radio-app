@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full h-[60px] bg-black text-white border-t border-b border-white flex items-center gap-3">
+  <div class="w-full h-[60px] bg-neutral-800 text-white rounded-tl-xl rounded-tr-xl overflow-hidden flex items-center gap-3">
     <!-- Cover Image -->
     <img
       :src="current.mode === 'live' ? liveMeta.cover : current.cover || '/img/fallback-live.jpg'"
       class="w-[58px] h-[58px] object-cover"
       alt="Cover"
     />
-
+    
     <!-- Track Info -->
     <div class="flex-1 overflow-hidden">
       <p class="font-semibold text-sm truncate">
@@ -15,8 +15,8 @@
       <p class="text-xs text-gray-400 flex items-center gap-1">
         <template v-if="current.mode === 'live'">
           <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-red"></span>
           </span>
           Playing on Dia!
         </template>
@@ -48,12 +48,13 @@
         </div>
       </div>
     </div>
-
     <!-- Play/Pause Button -->
     <PlayPauseButton class="w-[58px] h-[58px]"
       :isPlaying="isPlaying"
       :onToggle="current.mode === 'live' ? toggleLivePlayback : togglePodcastPlayback"
     />
+
+    
   </div>
   <audio ref="audioRef" :src="current.src" preload="none" class="hidden" />
 
