@@ -65,7 +65,8 @@ import { ref, watch, onUnmounted, onMounted, watchEffect } from 'vue'
 import { usePlayer, audioRef } from '../composables/usePlayer'
 import PlayPauseButton from './PlayPauseButton.vue'
 
-const { current, isPlaying, play, pause, setSource } = usePlayer()
+const { current, isPlaying, pause, setAndPlay } = usePlayer()
+
 
 const liveMeta = ref({
   title: 'Live on Dia!',
