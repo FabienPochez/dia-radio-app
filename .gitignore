@@ -5,4 +5,3 @@ android
 .vscode/
 .env
 .DS_Store
-playerLogs.js
