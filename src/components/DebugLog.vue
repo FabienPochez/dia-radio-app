@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { usePlayerLogs } from '../../composables/playerLogs.js'
+import { usePlayerLogs } from './../composables/playerLogs.js'
 
 const { logs } = usePlayerLogs()
 
