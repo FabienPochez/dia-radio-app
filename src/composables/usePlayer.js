@@ -1,5 +1,6 @@
 // usePlayer.js
 import { reactive, readonly, ref } from 'vue'
+import { logPlayerEvent } from './playerLogs.js'
 
 const state = reactive({
   current: {
@@ -22,11 +23,42 @@ export function usePlayer() {
     audioRef.value.onplay = () => {
       state.isPlaying = true
       isPlayingRef.value = true
+      logPlayerEvent('Audio playing')
+      startPlaybackMonitor()
     }
 
     audioRef.value.onpause = () => {
       state.isPlaying = false
       isPlayingRef.value = false
+      logPlayerEvent('Audio paused')
+      stopPlaybackMonitor()
+    }
+    audioRef.value.onvolumechange = () => {
+  logPlayerEvent('Volume changed', {
+    volume: audioRef.value.volume
+  })
+}
+
+    // 🧪 ADDITIONAL DEBUGGING HOOKS
+    audioRef.value.ondurationchange = () => {
+      logPlayerEvent('Duration changed', {
+        duration: audioRef.value.duration
+      })
+    }
+
+    audioRef.value.onerror = () => {
+      logPlayerEvent('Audio error', {
+        code: audioRef.value.error?.code,
+        message: audioRef.value.error?.message
+      })
+    }
+
+    audioRef.value.onstalled = () => {
+      logPlayerEvent('Playback stalled')
+    }
+
+    audioRef.value.onended = () => {
+      logPlayerEvent('Playback ended')
     }
   }
 
@@ -38,8 +70,10 @@ export function usePlayer() {
       audioRef.value.src = src
       try {
         await audioRef.value.load()
+        logPlayerEvent('Audio loaded', { src })
       } catch (e) {
         console.warn('Load interrupted or blocked:', e)
+        logPlayerEvent('Audio load failed', { error: e })
       }
     }
 
@@ -57,9 +91,11 @@ export function usePlayer() {
       await audioRef.value.play()
       state.isPlaying = true
       isPlayingRef.value = true
+      logPlayerEvent('Audio play triggered')
       updateMediaSession()
     } catch (err) {
       console.warn('Play interrupted or blocked:', err)
+      logPlayerEvent('Audio play failed', { error: err })
     }
   }
 
@@ -71,6 +107,7 @@ export function usePlayer() {
 
       if (state.current.mode === 'live') {
         audioRef.value.currentTime = 0
+        logPlayerEvent('Live stream reset to start')
       }
     }
   }
@@ -103,9 +140,12 @@ export function usePlayer() {
 
       navigator.mediaSession.setActionHandler('play', () => {
         audioRef.value.play()
+        logPlayerEvent('MediaSession play triggered')
       })
+
       navigator.mediaSession.setActionHandler('pause', () => {
         audioRef.value.pause()
+        logPlayerEvent('MediaSession pause triggered')
       })
     }
   }
@@ -120,4 +160,23 @@ export function usePlayer() {
     audioRef: readonly(audioRef),
     setDefaultLive
   }
+}
+
+
+let playbackInterval = null
+
+function startPlaybackMonitor() {
+  clearInterval(playbackInterval)
+  playbackInterval = setInterval(() => {
+    if (audioRef.value && !audioRef.value.paused) {
+      logPlayerEvent('Playback heartbeat', {
+        currentTime: audioRef.value.currentTime,
+        duration: audioRef.value.duration
+      })
+    }
+  }, 15000) // every 15s
+}
+
+function stopPlaybackMonitor() {
+  clearInterval(playbackInterval)
 }

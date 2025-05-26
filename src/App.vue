@@ -11,6 +11,7 @@
         </div>
         <PodcastList v-if="currentTab === 'shows'" />
         <About v-if="currentTab === 'about'" />
+        <DebugLog v-if="currentTab === 'bugs'" />
       </main>
 
       <!-- BottomNav (fixed at bottom) -->
@@ -34,6 +35,7 @@ import LiveCard from './components/LiveCard.vue'
 import NextUp from './components/NextUp.vue'
 import PodcastList from './components/PodcastList.vue'
 import About from './components/About.vue'
+import DebugLog from './components/DebugLog.vue'
 import GlobalPlayer from './components/GlobalPlayer.vue'
 import BottomNav from './components/BottomNav.vue'
 
