@@ -10,7 +10,10 @@
 <n-modal v-model:show="showModal" title="Aide au débogage" preset="dialog">
   <div class="space-y-3 text-sm leading-relaxed">
     <p>Merci de nous filer un coup de main pour améliorer l’app ! Voici comment tester le lecteur et nous envoyer un retour utile :</p>
-
+    <p class="text-sm text-yellow-600 font-medium">
+  🔄 Avant de tester : ferme complètement l’app (depuis TestFlight), puis relance-la.  
+  → Ça garantit que tu as bien la dernière version avec tous les outils de debug.
+    </p>
     <strong>🎧 Ce qu’on cherche à tester :</strong>
     <ul class="list-disc pl-5">
       <li>Écoute longue (20+ minutes)</li>
