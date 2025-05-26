@@ -31,13 +31,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import LiveCard from './components/LiveCard.vue'
-import NextUp from './components/NextUp.vue'
-import PodcastList from './components/PodcastList.vue'
-import About from './components/About.vue'
-import DebugLog from './components/DebugLog.vue'
-import GlobalPlayer from './components/GlobalPlayer.vue'
-import BottomNav from './components/BottomNav.vue'
+import LiveCard from '@/components/live/LiveCard.vue'
+import NextUp from '@/components/layout/NextUp.vue'
+import PodcastList from '@/components/podcast/PodcastList.vue'
+import About from '@/components/layout/About.vue'
+import DebugLog from '@/components/debug/DebugLog.vue'
+import GlobalPlayer from '@/components/player/GlobalPlayer.vue'
+import BottomNav from '@/components/layout/BottomNav.vue'
 
 const currentTab = ref('live')
 import { usePlayer } from './composables/usePlayer'

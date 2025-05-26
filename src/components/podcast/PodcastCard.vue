@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import PlayPauseButton from './PlayPauseButton.vue'
+import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
 
 defineProps({
   title: String,

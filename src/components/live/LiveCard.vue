@@ -39,8 +39,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { usePlayer } from '../composables/usePlayer'
-import PlayPauseButton from './PlayPauseButton.vue'
+import { usePlayer } from '@/composables/usePlayer'
+import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
 
 const liveTrack = ref(null)
 

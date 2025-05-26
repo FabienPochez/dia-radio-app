@@ -62,8 +62,8 @@
 
 <script setup>
 import { ref, watch, onUnmounted, onMounted, watchEffect } from 'vue'
-import { usePlayer, audioRef } from '../composables/usePlayer'
-import PlayPauseButton from './PlayPauseButton.vue'
+import { usePlayer, audioRef } from '@/composables/usePlayer'
+import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
 
 const { current, isPlaying, pause, setAndPlay } = usePlayer()
 

@@ -19,8 +19,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { usePlayer } from '../composables/usePlayer'
-import PodcastCard from './PodcastCard.vue'
+import { usePlayer } from '@/composables/usePlayer'
+import PodcastCard from '@/components/podcast/PodcastCard.vue'
 
 const { current, isPlaying, pause, setAndPlay } = usePlayer()
 

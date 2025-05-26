@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { usePlayer } from '../composables/usePlayer'
+import { usePlayer } from '@/composables/usePlayer'
 
 const { play, pause, current, isPlaying } = usePlayer()
 const streamUrl = 'https://www.radioking.com/play/dia-radio/446203'

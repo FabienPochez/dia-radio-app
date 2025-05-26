@@ -26,10 +26,10 @@
 
 <script setup>
 import { ref, watch, onUnmounted, onMounted } from 'vue'
-import { usePlayer, audioRef } from '../composables/usePlayer'
-import CoverImage from './CoverImage.vue'
-import TrackInfo from './TrackInfo.vue'
-import PlayPauseButton from './PlayPauseButton.vue'
+import { usePlayer, audioRef } from '@/composables/usePlayer'
+import CoverImage from '@/components/shared/CoverImage.vue'
+import TrackInfo from '@/components/player/TrackInfo.vue'
+import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
 
 const { current, isPlaying, pause, setAndPlay } = usePlayer()
 
