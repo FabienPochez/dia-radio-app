@@ -1,5 +1,5 @@
 // usePlayer.js
-import { reactive, readonly, ref } from 'vue'
+import { reactive, readonly, ref, onMounted, onUnmounted } from 'vue'
 import { logPlayerEvent } from './playerLogs.js'
 
 const state = reactive({
@@ -20,6 +20,8 @@ export function usePlayer() {
     audioRef.value = new Audio()
     audioRef.value.preload = 'none'
 
+    // === AUDIO EVENT HOOKS ===
+
     audioRef.value.onplay = () => {
       state.isPlaying = true
       isPlayingRef.value = true
@@ -30,16 +32,20 @@ export function usePlayer() {
     audioRef.value.onpause = () => {
       state.isPlaying = false
       isPlayingRef.value = false
-      logPlayerEvent('Audio paused')
+      logPlayerEvent('Audio paused — could be UI, system, AirPlay, or background')
       stopPlaybackMonitor()
     }
-    audioRef.value.onvolumechange = () => {
-  logPlayerEvent('Volume changed', {
-    volume: audioRef.value.volume
-  })
-}
 
-    // 🧪 ADDITIONAL DEBUGGING HOOKS
+    audioRef.value.onstalled = () => {
+      logPlayerEvent('Playback stalled — likely due to AirPlay, buffer, or network drop')
+    }
+
+    audioRef.value.onvolumechange = () => {
+      logPlayerEvent('Volume changed', {
+        volume: audioRef.value.volume
+      })
+    }
+
     audioRef.value.ondurationchange = () => {
       logPlayerEvent('Duration changed', {
         duration: audioRef.value.duration
@@ -53,13 +59,15 @@ export function usePlayer() {
       })
     }
 
-    audioRef.value.onstalled = () => {
-      logPlayerEvent('Playback stalled')
-    }
-
     audioRef.value.onended = () => {
       logPlayerEvent('Playback ended')
     }
+
+    // === VISIBILITY CHANGE LOGGING ===
+
+    document.addEventListener('visibilitychange', () => {
+      logPlayerEvent(`Document visibility changed: ${document.visibilityState}`)
+    })
   }
 
   async function setSource({ src, title, mode = 'podcast', cover = '' }) {
@@ -88,10 +96,11 @@ export function usePlayer() {
 
   async function play() {
     try {
+      logPlayerEvent('User tapped PLAY')
       await audioRef.value.play()
       state.isPlaying = true
       isPlayingRef.value = true
-      logPlayerEvent('Audio play triggered')
+      logPlayerEvent('Audio play triggered (manual)')
       updateMediaSession()
     } catch (err) {
       console.warn('Play interrupted or blocked:', err)
@@ -101,6 +110,7 @@ export function usePlayer() {
 
   function pause() {
     if (audioRef.value) {
+      logPlayerEvent('User tapped PAUSE')
       audioRef.value.pause()
       state.isPlaying = false
       isPlayingRef.value = false
@@ -139,13 +149,13 @@ export function usePlayer() {
       })
 
       navigator.mediaSession.setActionHandler('play', () => {
+        logPlayerEvent('MediaSession: system triggered PLAY')
         audioRef.value.play()
-        logPlayerEvent('MediaSession play triggered')
       })
 
       navigator.mediaSession.setActionHandler('pause', () => {
+        logPlayerEvent('MediaSession: system triggered PAUSE')
         audioRef.value.pause()
-        logPlayerEvent('MediaSession pause triggered')
       })
     }
   }
@@ -162,6 +172,7 @@ export function usePlayer() {
   }
 }
 
+// === HEARTBEAT MONITOR ===
 
 let playbackInterval = null
 
