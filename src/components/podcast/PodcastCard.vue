@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <div class="bg-neutral-800 rounded-l text-white overflow-hidden relative p-3">
+    <div class="bg-neutral-900 rounded-l text-white overflow-hidden relative">
       <!-- Image wrapper with 4:3 ratio -->
       <div class="relative aspect-[3/2] w-full">
         <img
@@ -18,7 +18,7 @@
 
       <!-- Title -->
       <div class="p-3">
-        <h3 class="font-bold leading-tight">
+        <h3 class=" text-lg leading-tight">
           {{ title }}
         </h3>
         <!-- Optional subtitle or date can be added here later -->
