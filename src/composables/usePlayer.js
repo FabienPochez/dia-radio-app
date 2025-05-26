@@ -175,18 +175,30 @@ export function usePlayer() {
 // === HEARTBEAT MONITOR ===
 
 let playbackInterval = null
+let lastTime = 0
 
 function startPlaybackMonitor() {
   clearInterval(playbackInterval)
+  lastTime = audioRef.value?.currentTime || 0
+
   playbackInterval = setInterval(() => {
     if (audioRef.value && !audioRef.value.paused) {
+      const current = audioRef.value.currentTime
+
       logPlayerEvent('Playback heartbeat', {
-        currentTime: audioRef.value.currentTime,
+        currentTime: current,
         duration: audioRef.value.duration
       })
+
+      if (current === lastTime) {
+        logPlayerEvent('⚠️ Watchdog: Playback time frozen — audio may be stalled or inactive')
+      }
+
+      lastTime = current
     }
-  }, 15000) // every 15s
+  }, 15000)
 }
+
 
 function stopPlaybackMonitor() {
   clearInterval(playbackInterval)
