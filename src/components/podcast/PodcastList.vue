@@ -41,7 +41,8 @@ async function fetchRSS() {
     const entries = Array.from(xml.querySelectorAll('item')).map((item) => ({
       title: item.querySelector('title')?.textContent || '',
       description: item.querySelector('description')?.textContent || '',
-      audioUrl: item.querySelector('enclosure')?.getAttribute('url') || '',
+      audioUrl: `https://stream.diaradio.live/stream?url=${encodeURIComponent(item.querySelector('enclosure')?.getAttribute('url') || '')}`,
+
       image:
         item.getElementsByTagNameNS('http://www.itunes.com/dtds/podcast-1.0.dtd', 'image')[0]?.getAttribute('href') ||
         item.querySelector('image')?.getAttribute('href') ||
