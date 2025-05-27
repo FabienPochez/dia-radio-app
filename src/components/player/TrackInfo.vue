@@ -4,9 +4,16 @@
   <div :key="mode">
     <!-- LIVE Mode -->
     <template v-if="mode === 'live'">
-      <p class="font-semibold text-sm truncate">
-        {{ title }}
-      </p>
+      <div class="w-full max-w-full">
+        <n-marquee v-if="title.length > 25" :speed="20" class="font-semibold font-sans text-sm text-white">
+            <span class="pr-10">{{ title }}</span>
+        </n-marquee>
+        <p v-else class="font-semibold font-sans text-sm text-white">
+          {{ title }}
+        </p>
+      </div>
+      
+   
       <p class="text-xs text-gray-400 flex items-center gap-1">
         <span class="relative flex h-2 w-2">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red opacity-75"></span>
@@ -65,6 +72,7 @@
 
 
 <script setup>
+import { NMarquee } from 'naive-ui'
 defineProps({
   title: String,
   mode: String,

@@ -1,8 +1,13 @@
 <template>
-  <div class="w-full h-[60px] bg-neutral-800 text-white rounded-t-xl overflow-hidden flex items-center gap-3">
+  <div class="w-full h-[60px] bg-neutral-800 text-white rounded-t-xl overflow-hidden flex items-center gap-3 pr-5">
     <!-- Cover -->
     <CoverImage :src="current.mode === 'live' ? liveMeta.cover : current.cover || '/img/fallback-live.jpg'" />
-
+    <!-- Play / Pause -->
+    <PlayPauseButton
+      class="h-full aspect-square !bg-transparent"
+      :isPlaying="isPlaying"
+      :onToggle="current.mode === 'live' ? toggleLivePlayback : togglePodcastPlayback"
+    />
     <!-- Track Info -->
     <TrackInfo
       :title="current.mode === 'live' ? liveMeta.title : current.title || 'Podcast Episode'"
@@ -12,12 +17,7 @@
       @seek="onSliderChange"
     />
 
-    <!-- Play / Pause -->
-    <PlayPauseButton
-      class="h-full aspect-square"
-      :isPlaying="isPlaying"
-      :onToggle="current.mode === 'live' ? toggleLivePlayback : togglePodcastPlayback"
-    />
+    
   </div>
 
   <audio ref="audioRef" :src="current.src" preload="none" class="hidden" />
