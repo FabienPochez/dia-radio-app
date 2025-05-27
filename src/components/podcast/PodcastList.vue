@@ -2,46 +2,48 @@
   <div class="max-w-4xl mx-auto">
     <h2 class="text-2xl uppercase font-bold mb-4">Latest Shows</h2>
 
-    <n-input
-      v-model:value="searchQuery"
-      placeholder="Search episodes..."
-      size="medium"
-      round
-      class="mb-4"
-      :style="{
-        backgroundColor: 'transparent',
-        color: '#f3f4f6',
-        '--n-color': 'transparent',
-        '--n-color-focus': 'transparent',
-        '--n-color-active': 'transparent',
-        '--n-border': '1px solid #f3f4f6',
-        '--n-border-hover': '1px solid #ffc8c8',
-        '--n-border-focus': '1px solid #ffc8c8',
-        '--n-border-active': '1px solid #ffc8c8',
-        '--n-box-shadow-focus': 'none',
-        '--n-text-color': '#fff',
-        '--n-placeholder-color': 'rgba(255,255,255,0.4)',
-        '--n-clear-size': '24px'
-      }"
-    >
-      <template #suffix>
-        <transition name="fade" mode="out-in">
-          <div class="w-6 h-6 flex items-center justify-center" :key="searchQuery ? 'clear' : 'search'">
-            <button
-              v-if="searchQuery"
-              @click.stop="searchQuery = ''"
-              class="focus:outline-none"
-            >
-              <XCircle class="w-6 h-6 text-white opacity-80" />
-            </button>
-            <Search
-              v-else
-              class="w-6 h-6 text-white opacity-60"
-            />
-          </div>
-        </transition>
-      </template>
-    </n-input>
+    <div class="sticky top-0 z-10 pb-2">
+      <n-input
+        v-model:value="searchQuery"
+        placeholder="Search episodes..."
+        size="medium"
+        round
+        class="mb-4"
+        :style="{
+          backgroundColor: '#171717',
+          color: '#f3f4f6',
+          '--n-color': 'transparent',
+          '--n-color-focus': 'transparent',
+          '--n-color-active': 'transparent',
+          '--n-border': '1px solid #f3f4f6',
+          '--n-border-hover': '1px solid #ffc8c8',
+          '--n-border-focus': '1px solid #ffc8c8',
+          '--n-border-active': '1px solid #ffc8c8',
+          '--n-box-shadow-focus': 'none',
+          '--n-text-color': '#fff',
+          '--n-placeholder-color': 'rgba(255,255,255,0.4)',
+          '--n-clear-size': '24px'
+        }"
+      >
+        <template #suffix>
+          <transition name="fade" mode="out-in">
+            <div class="w-6 h-6 flex items-center justify-center" :key="searchQuery ? 'clear' : 'search'">
+              <button
+                v-if="searchQuery"
+                @click.stop="searchQuery = ''"
+                class="focus:outline-none"
+              >
+                <XCircle class="w-6 h-6 text-white opacity-80" />
+              </button>
+              <Search
+                v-else
+                class="w-6 h-6 text-white opacity-60"
+              />
+            </div>
+          </transition>
+        </template>
+      </n-input>
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <PodcastCard
