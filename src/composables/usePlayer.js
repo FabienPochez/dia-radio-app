@@ -109,18 +109,14 @@ export function usePlayer() {
   }
 
   function pause() {
-    if (audioRef.value) {
-      logPlayerEvent('User tapped PAUSE')
-      audioRef.value.pause()
-      state.isPlaying = false
-      isPlayingRef.value = false
-
-      if (state.current.mode === 'live') {
-        audioRef.value.currentTime = 0
-        logPlayerEvent('Live stream reset to start')
-      }
-    }
+  if (audioRef.value) {
+    logPlayerEvent('User tapped PAUSE')
+    audioRef.value.pause()
+    state.isPlaying = false
+    isPlayingRef.value = false
   }
+}
+
 
   async function setAndPlay({ src, title, mode = 'podcast', cover = '' }) {
     await setSource({ src, title, mode, cover })
