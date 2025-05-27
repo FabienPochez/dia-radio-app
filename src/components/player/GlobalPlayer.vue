@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-[60px] bg-neutral-800 text-white rounded-t-xl overflow-hidden flex items-center gap-3 pr-5">
+  <div class="w-full h-[60px] bg-neutral-900 text-white rounded-t-xl overflow-hidden flex items-center gap-3 pr-5">
     <!-- Cover -->
     <CoverImage :src="current.mode === 'live' ? liveMeta.cover : current.cover || '/img/fallback-live.jpg'" />
     <!-- Play / Pause -->
@@ -16,22 +16,69 @@
       :duration="duration"
       @seek="onSliderChange"
     />
+    <!-- Drawer Toggle Button -->
+    <button
+      @click="showDrawer = true"
+      class="ml-auto p-2 focus:outline-none"
+    >
+    <ChevronUp class="w-8 h-8 text-white" />
+    </button>
+
 
     
   </div>
+<n-drawer
+  v-model:show="showDrawer"
+  placement="bottom"
+  :min-height="'auto'"
+  :trap-focus="false"
+  :auto-focus="false"
+  :height="drawerHeight"
+  resizable
+  display-directive="show"
+  class="!bg-transparent text-white custom-slide"
+>
+  <div class="bg-neutral-800 rounded-t-xl shadow-xl w-full max-h-[90vh] overflow-y-auto">
+    <NowPlayingDrawer @close="showDrawer = false" />
+  </div>
+</n-drawer>
+
+
+
+
+
 
   <audio ref="audioRef" :src="current.src" preload="none" class="hidden" />
 </template>
 
 
 <script setup>
-import { ref, watch, onUnmounted, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+
 import { usePlayer, audioRef } from '@/composables/usePlayer'
 import CoverImage from '@/components/shared/CoverImage.vue'
 import TrackInfo from '@/components/player/TrackInfo.vue'
 import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
+import { ChevronUp } from 'lucide-vue-next'
+import NowPlayingDrawer from '@/components/layout/NowPlayingDrawer.vue'
+
+
+
 
 const { current, isPlaying, pause, setAndPlay } = usePlayer()
+
+const showDrawer = ref(false)
+const drawerHeight = ref('auto')
+const drawerContentRef = ref(null)
+
+watch(showDrawer, (val) => {
+  if (val && drawerContentRef.value) {
+    nextTick(() => {
+      const contentHeight = drawerContentRef.value.scrollHeight
+      drawerHeight.value = `${Math.min(contentHeight, window.innerHeight * 0.9)}px`
+    })
+  }
+})
 
 const liveMeta = ref({
   title: 'Live on Dia!',
@@ -147,3 +194,21 @@ function updateMediaSession(title, artist, artworkUrl) {
   }
 }
 </script>
+
+
+<style scoped>
+.custom-slide .n-drawer.n-drawer--bottom-placement {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.custom-slide-enter-from,
+.custom-slide-leave-to {
+  transform: translateY(100%);
+  opacity: 0;
+}
+.custom-slide-enter-to,
+.custom-slide-leave-from {
+  transform: translateY(0%);
+  opacity: 1;
+}
+</style>
