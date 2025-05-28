@@ -10,6 +10,7 @@
           <NextUp />
         </div>
         <PodcastList v-if="currentTab === 'shows'" />
+        <Search v-if="currentTab === 'search'" />
         <About v-if="currentTab === 'about'" />
         <DebugLog v-if="currentTab === 'bugs'" />
       </main>
@@ -38,9 +39,10 @@ import About from '@/components/layout/About.vue'
 import DebugLog from '@/components/debug/DebugLog.vue'
 import GlobalPlayer from '@/components/player/GlobalPlayer.vue'
 import BottomNav from '@/components/layout/BottomNav.vue'
+import Search from '@/components/podcast/Search.vue'
 
 const currentTab = ref('live')
-import { usePlayer } from './composables/usePlayer'
+import { usePlayer } from '@/composables/usePlayer'
 
 const { setDefaultLive } = usePlayer()
 

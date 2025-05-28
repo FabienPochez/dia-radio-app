@@ -2,6 +2,7 @@ node_modules
 dist
 ios
 android
+scraper
 .vscode/
 .env
 .DS_Store
