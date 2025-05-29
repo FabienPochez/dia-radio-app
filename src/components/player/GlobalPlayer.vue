@@ -71,6 +71,7 @@ const showDrawer = ref(false)
 const drawerHeight = ref('auto')
 const drawerContentRef = ref(null)
 
+
 watch(showDrawer, (val) => {
   if (val && drawerContentRef.value) {
     nextTick(() => {
