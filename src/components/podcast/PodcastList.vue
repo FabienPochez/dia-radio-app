@@ -6,11 +6,11 @@
       <n-input
         v-model:value="searchQuery"
         placeholder="Search episodes..."
-        size="medium"
+        size="Large"
         round
         class="mb-4"
         :style="{
-          backgroundColor: '#171717',
+          backgroundColor: '#000000',
           color: '#f3f4f6',
           '--n-color': 'transparent',
           '--n-color-focus': 'transparent',

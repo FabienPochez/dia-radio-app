@@ -6,7 +6,7 @@
       <n-input
         v-model:value="searchQuery"
         placeholder="Search tracks or shows..."
-        size="medium"
+        size="Large"
         round
         class="mb-4"
         :style="inputStyles"
