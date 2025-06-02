@@ -98,7 +98,8 @@ async function fetchRSS() {
         ''
     }))
     // Shuffle once before displaying
-    items.value = entries.sort(() => Math.random() - 0.5)
+    // items.value = entries.sort(() => Math.random() - 0.5) // ⛔️ shuffled
+    items.value = entries // ✅ original order
   } catch (err) {
     console.error('Failed to fetch RSS feed:', err)
   }
