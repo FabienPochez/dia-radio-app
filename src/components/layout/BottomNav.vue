@@ -27,6 +27,7 @@ const props = defineProps({
 const tabs = shallowRef([
   { id: 'live', label: 'Live', icon: RadioIcon },
   { id: 'shows', label: 'Shows', icon: CassetteTape },
+  { id: 'search', label: 'Search', icon: Search },
   { id: 'about', label: 'About', icon: InfoIcon },
   { id: 'bugs', label: 'Bugs', icon: Bug }
 ])

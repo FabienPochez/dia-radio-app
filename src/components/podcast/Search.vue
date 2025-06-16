@@ -96,7 +96,7 @@ async function isMp3UrlValid(url) {
 
 async function fetchLocalTracks() {
   try {
-    const res = await fetch('/output/tracks-all.json')
+    const res = await fetch('/output/episodes-with-id.json')
     const json = await res.json()
 
     const filtered = Object.values(json).filter(track => {
@@ -107,16 +107,15 @@ async function fetchLocalTracks() {
         !track.permalink.includes('/likes') &&
         !track.permalink.includes('/reposts')
 
-      const hasLikelyMp3 =
-        track.mp3 &&
-        track.mp3.startsWith('https://feeds.soundcloud.com/stream/') &&
-        track.mp3.endsWith('.mp3')
+      const hasTrackId = typeof track.track_id === 'number' && track.track_id > 0;
+
 
       // ⬇️ TEMPORARY PATCH UNTIL SCRAPER IS FIXED
       // This will skip tracks with known broken mp3 URLs
       const knownBroken = track.mp3?.includes('1989571215-diaradio-gros-volume-sur-la-molle-chach-251224')
 
-      return isValidPermalink && hasLikelyMp3 && !knownBroken
+      return isValidPermalink && hasTrackId && !knownBroken;
+
     })
 
     items.value = filtered
@@ -130,17 +129,17 @@ async function fetchLocalTracks() {
 
 
 
-function proxyUrl(mp3) {
-  return `https://stream.diaradio.live/stream?url=${encodeURIComponent(mp3)}`
+function proxyUrlFromTrackId(id) {
+  return `https://stream.diaradio.live/stream/${id}`;
 }
 
 function togglePodcast(podcast) {
-  if (!podcast.mp3 || !podcast.mp3.startsWith("https://feeds.soundcloud.com/stream/")) {
-    console.warn('⚠️ Invalid or missing MP3 URL for', podcast.title);
+  if (!podcast.track_id) {
+    console.warn('⚠️ Missing track_id for', podcast.title);
     return;
   }
 
-  const streamUrl = proxyUrl(podcast.mp3);
+  const streamUrl = proxyUrlFromTrackId(podcast.track_id);
 
   if (isPlaying.value && current.title === podcast.title) {
     pause();
@@ -153,11 +152,7 @@ function togglePodcast(podcast) {
     });
   }
 }
-
-
-
-
-onMounted(fetchLocalTracks)
+onMounted(fetchLocalTracks);
 </script>
 
 <style scoped>
