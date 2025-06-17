@@ -64,10 +64,13 @@ const items = ref([])
 const filteredItems = computed(() => {
   return items.value.filter(item =>
     item.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    item.genre.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    (item.genres || []).some(g =>
+      g.toLowerCase().includes(searchQuery.value.toLowerCase())
+    ) ||
     item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
   )
 })
+
 
 const inputStyles = {
   backgroundColor: '#171717',
@@ -101,11 +104,11 @@ async function fetchLocalTracks() {
 
     const filtered = Object.values(json).filter(track => {
       const isValidPermalink =
-        track.permalink &&
-        track.permalink.startsWith('/diaradio/') &&
-        !track.permalink.includes('/sets/') &&
-        !track.permalink.includes('/likes') &&
-        !track.permalink.includes('/reposts')
+        track.scPermalink &&
+        track.scPermalink.startsWith('/diaradio/') &&
+        !track.scPermalink.includes('/sets/') &&
+        !track.scPermalink.includes('/likes') &&
+        !track.scPermalink.includes('/reposts')
 
       const hasTrackId = typeof track.track_id === 'number' && track.track_id > 0;
 
@@ -141,17 +144,15 @@ function togglePodcast(podcast) {
 
   const streamUrl = proxyUrlFromTrackId(podcast.track_id);
 
-  if (isPlaying.value && current.title === podcast.title) {
-    pause();
-  } else {
-    setAndPlay({
-      src: streamUrl,
-      title: podcast.title,
-      mode: 'podcast',
-      cover: podcast.cover || '/img/fallback-live.jpg'
-    });
-  }
+  setAndPlay({
+  src: streamUrl,
+  title: podcast.title,
+  mode: 'podcast',
+  cover: podcast.cover || '/img/fallback-live.jpg',
+  genres: podcast.genres || []
+});
 }
+
 onMounted(fetchLocalTracks);
 </script>
 
