@@ -23,6 +23,16 @@
         </h3>
         <!-- Optional subtitle or date can be added here later -->
       </div>
+      <!-- genres -->
+       <div class="pt-4">
+        <span
+          v-for="genre in genres"
+          :key="genre"
+          class="text-xs px-2 py-1 mr-2 border border-white  rounded-full mr-1 mb-1 inline-block"
+          >
+          {{ genre }}
+        </span>
+       </div>
     </div>
   </div>
 </template>
@@ -30,10 +40,15 @@
 <script setup>
 import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
 
+
 defineProps({
   title: String,
   image: String,
   isPlaying: Boolean,
-  toggle: Function
+  toggle: Function,
+  genres: {
+    type: Array,
+    default: () => [],
+  },
 })
 </script>

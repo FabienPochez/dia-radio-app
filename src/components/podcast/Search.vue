@@ -40,6 +40,7 @@
         :image="item.cover"
         :isPlaying="isPlaying && current.title === item.title"
         :toggle="() => togglePodcast(item)"
+        :genres="item.genres || []"
       />
     </div>
 
@@ -99,7 +100,7 @@ async function isMp3UrlValid(url) {
 
 async function fetchLocalTracks() {
   try {
-    const res = await fetch('/output/episodes-with-id.json')
+    const res = await fetch('/output/episodes.json')
     const json = await res.json()
 
     const filtered = Object.values(json).filter(track => {

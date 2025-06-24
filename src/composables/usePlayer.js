@@ -7,7 +7,8 @@ const state = reactive({
     title: '',
     src: '',
     mode: '',
-    cover: ''
+    cover: '',
+    genres: []
   },
   isPlaying: false
 })
@@ -70,7 +71,7 @@ export function usePlayer() {
     })
   }
 
-  async function setSource({ src, title, mode = 'podcast', cover = '' }) {
+  async function setSource({ src, title, mode = 'podcast', cover = '', genres = [] }) {
     const isNewStream = audioRef.value.src !== src || state.current.mode !== mode
 
     if (isNewStream) {
@@ -89,6 +90,8 @@ export function usePlayer() {
     state.current.src = src
     state.current.mode = mode
     state.current.cover = cover
+    state.current.genres = genres
+
 
     state.isPlaying = false
     isPlayingRef.value = false
@@ -118,8 +121,8 @@ export function usePlayer() {
 }
 
 
-  async function setAndPlay({ src, title, mode = 'podcast', cover = '' }) {
-    await setSource({ src, title, mode, cover })
+  async function setAndPlay({ src, title, mode = 'podcast', cover = '', genres = [] }) {
+    await setSource({ src, title, mode, cover, genres })
     await play()
   }
 

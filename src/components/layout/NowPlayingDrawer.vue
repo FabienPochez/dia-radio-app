@@ -26,19 +26,22 @@
         </div>
 
         <!-- Genre pills -->
-        <div class="flex gap-2 mt-2 flex-wrap" v-if="currentTags.length > 0">
-          <n-tag
-            v-for="(tag, i) in currentTags"
-            :key="i"
-            type="default"
-            size="small"
-            round
-            bordered
-            class="border-white text-white bg-transparent"
-          >
-            {{ tag }}
-          </n-tag>
-        </div>
+<div class="flex gap-2 mt-2 flex-wrap" v-if="genres.length > 0">
+  <n-tag
+    v-for="(genre, i) in genres"
+    :key="i"
+    type="default"
+    size="small"
+    round
+    bordered
+    class="border-white text-white bg-transparent"
+  >
+    {{ genre }}
+  </n-tag>
+</div>
+
+
+       
       </div>
 
       <!-- Controls -->
@@ -82,7 +85,8 @@ onMounted(() => {
 })
 
 // Genre tags
-const currentTags = computed(() =>
+const genres = computed(() =>
   current.mode === 'podcast' && Array.isArray(current.genres) ? current.genres : []
 )
+
 </script>
