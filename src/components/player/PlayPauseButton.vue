@@ -1,7 +1,7 @@
 <template>
   <button
     @click.stop="handleToggle"
-    class="w-12 h-12 flex items-center justify-center bg-black/30 text-white"
+    class="w-12 h-12 flex items-center justify-center bg-neutral-900/70 text-white"
   >
     <transition name="fade" mode="out-in">
       <component
