@@ -1,7 +1,6 @@
 <template>
-  <Drawer :open="open" @update:open="emit('update:open', $event)" direction="bottom">
-
-    <DrawerContent class="rounded-t-xl max-w-screen-md mx-auto bg-neutral-900 text-white px-5 pt-4 pb-10">
+  <div class="flex">
+    <div class="px-5 pt-4 pb-10 text-white">
       <!-- Header -->
       <div class="flex justify-between items-center mb-4">
         <h2 class="text-xl font-semibold font-sans">Now Playing</h2>
@@ -21,50 +20,50 @@
           {{ current.mode === 'live' ? liveMeta.title : current.title }}
         </h3>
 
+        <!-- Mode -->
         <div class="mt-2 text-xs text-gray-400 uppercase tracking-widest">
           {{ current.mode }}
         </div>
 
         <!-- Genre pills -->
-        <div class="flex gap-2 mt-2 flex-wrap" v-if="genres.length > 0">
-          <Badge
-  v-for="genre in genres"
-  :key="genre"
-  variant="genre"
-  class="mr-2"
->
-  {{ genre }}
-</Badge>
-        </div>
+<div class="flex gap-2 mt-2 flex-wrap" v-if="genres.length > 0">
+  <n-tag
+    v-for="(genre, i) in genres"
+    :key="i"
+    type="default"
+    size="small"
+    round
+    bordered
+    class="border-white text-white bg-transparent"
+  >
+    {{ genre }}
+  </n-tag>
+</div>
+
+
+       
       </div>
 
       <!-- Controls -->
       <GlobalPlayerControls class="mt-6" />
-    </DrawerContent>
-  </Drawer>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import {
-  Drawer,
-  DrawerContent,
-} from '@/components/ui/drawer'
-import { Badge } from '@/components/ui/badge'
 import { ChevronDown } from 'lucide-vue-next'
 import { usePlayer } from '@/composables/usePlayer'
 import GlobalPlayerControls from '@/components/player/GlobalPlayerControls.vue'
 import { ref, onMounted, computed } from 'vue'
 
 const { current } = usePlayer()
+const emit = defineEmits(['close'])
 
-defineProps({ open: Boolean })
-const emit = defineEmits(['update:open'])
-
-const emitClose = () => emit('update:open', false)
+const emitClose = () => emit('close')
 
 const liveMeta = ref({
   title: 'Live on Dia!',
-  cover: '/img/fallback-live.jpg',
+  cover: '/img/fallback-live.jpg'
 })
 
 async function fetchLiveTrack() {
@@ -85,7 +84,9 @@ onMounted(() => {
   }
 })
 
+// Genre tags
 const genres = computed(() =>
   current.mode === 'podcast' && Array.isArray(current.genres) ? current.genres : []
 )
+
 </script>

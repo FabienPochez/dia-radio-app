@@ -27,26 +27,11 @@
 
     
   </div>
-<n-drawer
-  v-model:show="showDrawer"
-  placement="bottom"
-  :min-height="'auto'"
-  :trap-focus="false"
-  :auto-focus="false"
-  :height="drawerHeight"
-  resizable
-  display-directive="show"
-  class="bg-transparent! text-white custom-slide"
->
-  <div class="bg-neutral-800 rounded-t-xl shadow-xl w-full max-h-[90vh] overflow-y-auto">
-    <NowPlayingDrawer @close="showDrawer = false" />
-  </div>
-</n-drawer>
-
-
-
-
-
+<Drawer v-model:open="showDrawer" direction="bottom">
+  <DrawerContent class="bg-neutral-900 rounded-t-xl shadow-xl w-full max-h-[90vh] overflow-y-auto">
+    <NowPlayingDrawer v-model:open="showDrawer" />
+  </DrawerContent>
+</Drawer>
 
   <audio ref="audioRef" :src="current.src" preload="none" class="hidden" />
 </template>
@@ -61,6 +46,10 @@ import TrackInfo from '@/components/player/TrackInfo.vue'
 import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
 import { ChevronUp } from 'lucide-vue-next'
 import NowPlayingDrawer from '@/components/layout/NowPlayingDrawer.vue'
+import {
+  Drawer,
+  DrawerContent
+} from '@/components/ui/drawer'
 
 
 
@@ -196,20 +185,3 @@ function updateMediaSession(title, artist, artworkUrl) {
 }
 </script>
 
-
-<style scoped>
-.custom-slide .n-drawer.n-drawer--bottom-placement {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.custom-slide-enter-from,
-.custom-slide-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
-.custom-slide-enter-to,
-.custom-slide-leave-from {
-  transform: translateY(0%);
-  opacity: 1;
-}
-</style>

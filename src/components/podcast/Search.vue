@@ -3,25 +3,20 @@
     <h2 class="text-2xl uppercase font-bold mb-4">Search</h2>
 
     <div class="sticky top-0 z-10 pb-2">
-      <n-input
-        v-model:value="searchQuery"
-        placeholder="Search tracks or shows..."
-        size="Large"
-        round
-        class="mb-4"
-        :style="inputStyles"
-      >
-        <template #suffix>
-          <transition name="fade" mode="out-in">
-            <div class="w-6 h-6 flex items-center justify-center" :key="searchQuery ? 'clear' : 'search'">
-              <button v-if="searchQuery" @click.stop="searchQuery = ''" class="focus:outline-hidden">
-                <XCircle class="w-6 h-6 text-white opacity-80" />
-              </button>
-              <Search v-else class="w-6 h-6 text-white opacity-60" />
-            </div>
-          </transition>
-        </template>
-      </n-input>
+      <Input
+    v-model="searchQuery"
+    placeholder="Search tracks or shows..."
+    class="h-10 pl-4 pr-10 text-sm rounded-full border-pink focus:border-white focus:ring-pink"
+  />
+
+  <transition name="fade" mode="out-in">
+    <div class="absolute right-3 top-1.5 w-6 h-6 flex items-center justify-center" :key="searchQuery ? 'clear' : 'search'">
+      <button v-if="searchQuery" @click.stop="searchQuery = ''" class="focus:outline-none">
+        <XCircle class="w-6 h-6 text-white opacity-80" />
+      </button>
+      <Search v-else class="w-6 h-6 text-white opacity-60" />
+    </div>
+  </transition>
     </div>
 
     <p v-if="!searchQuery" class="text-sm text-gray-400 pb-8">
@@ -53,7 +48,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { usePlayer } from '@/composables/usePlayer'
 import PodcastCard from '@/components/podcast/PodcastCard.vue'
-import { NInput } from 'naive-ui'
+import { Input } from '@/components/ui/input'
 import { Search, XCircle } from 'lucide-vue-next'
 
 const { current, isPlaying, pause, setAndPlay } = usePlayer()

@@ -25,13 +25,15 @@
       </div>
       <!-- genres -->
        <div class="pt-7 pb-5">
-        <span
-          v-for="genre in genres"
-          :key="genre"
-          class="text-xs font-sans px-2 py-1 mr-2 border border-white  rounded-full mr-1 mb-1 inline-block"
-          >
-          {{ genre }}
-        </span>
+        <Badge
+  v-for="genre in genres"
+  :key="genre"
+  variant="genre"
+  class="mr-2"
+>
+  {{ genre }}
+</Badge>
+
        </div>
     </div>
   </div>
@@ -39,6 +41,7 @@
 
 <script setup>
 import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
+import { Badge } from '@/components/ui/badge'
 
 
 defineProps({
