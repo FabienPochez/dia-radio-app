@@ -15,15 +15,16 @@
         <DebugLog v-if="currentTab === 'bugs'" />
       </main>
 
-      <!-- BottomNav (fixed at bottom) -->
-      <div class="absolute fixed bottom-0 left-0 w-full h-[80px] z-40">
-        <BottomNav :currentTab="currentTab" @update:tab="currentTab = $event" />
-      </div>
+      <!-- BottomNav (relative to container) -->
+<div class="absolute bottom-0 left-0 w-full h-[80px] z-40">
+  <BottomNav :currentTab="currentTab" @update:tab="currentTab = $event" />
+</div>
 
-      <!-- GlobalPlayer (above nav) -->
-      <div class="absolute fixed bottom-[80px] left-0 w-full z-50">
-        <GlobalPlayer />
-      </div>
+<!-- GlobalPlayer (above nav) -->
+<div class="absolute bottom-[80px] left-0 w-full z-50">
+  <GlobalPlayer />
+</div>
+
     </div>
   </div>
 </template>

@@ -54,13 +54,13 @@
     <div v-for="(log, index) in logs" :key="index" class="mb-4 border-b pb-2">
       <p class="text-xs text-gray-500">{{ log.timestamp }}</p>
       <p class="text-sm font-semibold">{{ log.message }}</p>
-      <pre v-if="Object.keys(log.data || {}).length" class="truncate bg-neutral-800 text-xs p-2 rounded mt-1">
+      <pre v-if="Object.keys(log.data || {}).length" class="truncate bg-neutral-800 text-xs p-2 rounded-sm mt-1">
 {{ JSON.stringify(log.data, null, 2) }}
       </pre>
     </div>
     <button
       @click="clearLogs"
-      class="mt-4 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded"
+      class="mt-4 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-sm"
     >
       Clear Logs
     </button>

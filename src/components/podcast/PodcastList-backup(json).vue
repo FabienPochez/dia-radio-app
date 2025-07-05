@@ -31,7 +31,7 @@
               <button
                 v-if="searchQuery"
                 @click.stop="searchQuery = ''"
-                class="focus:outline-none"
+                class="focus:outline-hidden"
               >
                 <XCircle class="w-6 h-6 text-white opacity-80" />
               </button>

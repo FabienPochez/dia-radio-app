@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-neutral-900 rounded-xl p-4 shadow w-full">
+  <div class="bg-neutral-900 rounded-xl p-4 shadow-sm w-full">
     <h3 class="font-sans text-m  font-semibold mb-2">🔜 Up Next</h3>
     <div v-if="next.length === 0" class="font-mono text-sm">No data</div>
     <ul v-else class="space-y-1">

@@ -14,7 +14,7 @@
         <template #suffix>
           <transition name="fade" mode="out-in">
             <div class="w-6 h-6 flex items-center justify-center" :key="searchQuery ? 'clear' : 'search'">
-              <button v-if="searchQuery" @click.stop="searchQuery = ''" class="focus:outline-none">
+              <button v-if="searchQuery" @click.stop="searchQuery = ''" class="focus:outline-hidden">
                 <XCircle class="w-6 h-6 text-white opacity-80" />
               </button>
               <Search v-else class="w-6 h-6 text-white opacity-60" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-zinc-900 rounded-xl p-4 shadow w-full">
+  <div class="bg-zinc-900 rounded-xl p-4 shadow-sm w-full">
     <h3 class="text-sm text-zinc-400 font-semibold mb-2">⏪ Recently Played</h3>
     <div v-if="prev.length === 0" class="text-sm text-zinc-500">No data</div>
     <ul v-else class="space-y-1">

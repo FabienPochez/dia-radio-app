@@ -2,7 +2,7 @@
   <div class="w-full">
     <div class="border-b border-pink  text-white overflow-hidden relative mb-3">
       <!-- Image wrapper with 4:3 ratio -->
-      <div class="relative aspect-[3/2] w-full">
+      <div class="relative aspect-3/2 w-full">
         <img
           :src="image"
           :alt="title"

@@ -2,7 +2,7 @@
   <img
     :src="src"
     alt="Cover"
-    class="h-full aspect-square object-cover rounded"
+    class="h-full aspect-square object-cover rounded-sm"
   />
 </template>
 

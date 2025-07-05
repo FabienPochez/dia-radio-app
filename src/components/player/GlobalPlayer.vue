@@ -4,7 +4,7 @@
     <CoverImage :src="current.mode === 'live' ? liveMeta.cover : current.cover || '/img/fallback-live.jpg'" />
     <!-- Play / Pause -->
     <PlayPauseButton
-      class="h-full aspect-square !bg-transparent"
+      class="h-full aspect-square bg-transparent!"
       :isPlaying="isPlaying"
       :onToggle="current.mode === 'live' ? toggleLivePlayback : togglePodcastPlayback"
     />
@@ -19,7 +19,7 @@
     <!-- Drawer Toggle Button -->
     <button
       @click="showDrawer = true"
-      class="ml-auto p-2 focus:outline-none"
+      class="ml-auto p-2 focus:outline-hidden"
     >
     <ChevronUp class="w-8 h-8 text-white" />
     </button>
@@ -36,7 +36,7 @@
   :height="drawerHeight"
   resizable
   display-directive="show"
-  class="!bg-transparent text-white custom-slide"
+  class="bg-transparent! text-white custom-slide"
 >
   <div class="bg-neutral-800 rounded-t-xl shadow-xl w-full max-h-[90vh] overflow-y-auto">
     <NowPlayingDrawer @close="showDrawer = false" />

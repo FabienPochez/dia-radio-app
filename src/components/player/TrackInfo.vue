@@ -45,7 +45,7 @@
           step="0.1"
           :value="currentTime"
           @input="$emit('seek', $event)"
-          class="w-full appearance-none bg-light-blue h-[2px] rounded outline-none
+          class="w-full appearance-none bg-light-blue h-[2px] rounded outline-hidden
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:w-3
             [&::-webkit-slider-thumb]:h-3

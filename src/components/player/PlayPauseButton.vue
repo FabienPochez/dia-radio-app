@@ -16,7 +16,7 @@
           v-else
           size="small"
           stroke="#ffffff"
-          class="!transition-all !duration-700"
+          class="transition-all! duration-700!"
       />
     </transition>
   </button>

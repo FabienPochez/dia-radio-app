@@ -6,7 +6,7 @@
       <PlayPauseButton
         :isPlaying="isPlaying"
         :onToggle="toggleLivePlayback"
-        class="!bg-transparent"
+        class="bg-transparent!"
       />
       <div class="flex-1 h-px bg-white/20"></div>
     </div>
@@ -16,7 +16,7 @@
       <PlayPauseButton
         :isPlaying="isPlaying"
         :onToggle="togglePodcastPlayback"
-        class="!bg-transparent"
+        class="bg-transparent!"
       />
       <input
         type="range"
@@ -25,7 +25,7 @@
         step="0.1"
         :value="currentTime"
         @input="onSliderChange"
-        class="w-full appearance-none bg-white/30 h-[2px] rounded outline-none
+        class="w-full appearance-none bg-white/30 h-[2px] rounded outline-hidden
           [&::-webkit-slider-thumb]:appearance-none
           [&::-webkit-slider-thumb]:w-3
           [&::-webkit-slider-thumb]:h-3
