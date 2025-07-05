@@ -28,19 +28,18 @@
       You can search by show name, track title, or genre.
     </p>
     <p v-if="searchQuery || items.length > 0" class="text-sm text-gray-400 pb-4">
-  {{ filteredItems.length }} of {{ items.length }} episodes match your search
-</p>
-
+      {{ filteredItems.length }} of {{ items.length }} episodes match your search
+    </p>
 
     <div v-if="searchQuery" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <PodcastCard
         v-for="(item, index) in filteredItems"
-        :key="index"
-        :title="item.title"
-        :image="item.cover"
-        :isPlaying="isPlaying && current.title === item.title"
+        :key="item.track_id"
+        :title="item.title || 'Untitled'"
+        :image="item.cover || '/img/fallback-live.jpg'"
+        :isPlaying="isPlaying && current.src === proxyUrlFromTrackId(item.track_id)"
         :toggle="() => togglePodcast(item)"
-        :genres="item.genres || []"
+        :genres="(item.genres || []).map(g => typeof g === 'string' ? g : g.name)"
       />
     </div>
 
@@ -63,15 +62,19 @@ const searchQuery = ref('')
 const items = ref([])
 
 const filteredItems = computed(() => {
+  if (!searchQuery.value) return []
+
+  const q = searchQuery.value.toLowerCase()
+
   return items.value.filter(item =>
-    item.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    item.title?.toLowerCase().includes(q) ||
+    item.description?.toLowerCase().includes(q) ||
     (item.genres || []).some(g =>
-      g.toLowerCase().includes(searchQuery.value.toLowerCase())
+      (typeof g === 'string' ? g : g.name).toLowerCase().includes(q)
     ) ||
-    item.description.toLowerCase().includes(searchQuery.value.toLowerCase())
+    item.show?.title?.toLowerCase().includes(q)
   )
 })
-
 
 const inputStyles = {
   backgroundColor: '#171717',
@@ -89,72 +92,64 @@ const inputStyles = {
   '--n-clear-size': '24px'
 }
 
-async function isMp3UrlValid(url) {
-  try {
-    const res = await fetch(`/stream?url=${encodeURIComponent(url)}`, { method: 'HEAD' })
-    return res.ok
-  } catch {
-    return false
+function proxyUrlFromTrackId(id) {
+  return `https://stream.diaradio.live/stream/${id}`
+}
+
+function togglePodcast(podcast) {
+  if (!podcast.track_id) {
+    console.warn('⚠️ Missing track_id for', podcast.title)
+    return
+  }
+
+  const streamUrl = proxyUrlFromTrackId(podcast.track_id)
+
+  if (current.value?.src === streamUrl && isPlaying.value) {
+    console.log('→ PAUSE triggered from Search')
+    pause()
+  } else {
+    console.log('→ PLAY triggered from Search')
+    setAndPlay({
+      src: streamUrl,
+      title: podcast.title,
+      mode: 'podcast',
+      cover: podcast.cover || '/img/fallback-live.jpg',
+      genres: podcast.genres || []
+    })
   }
 }
 
-async function fetchLocalTracks() {
+async function fetchEpisodesFromAPI() {
   try {
-    const res = await fetch('/output/episodes.json')
-    const json = await res.json()
+    const res = await fetch('https://content.diaradio.live/json/episodes.json')
+    const episodes = await res.json()
 
-    const filtered = Object.values(json).filter(track => {
-      const isValidPermalink =
+    const filtered = episodes.filter(track => {
+      const validPermalink =
         track.scPermalink &&
         track.scPermalink.startsWith('/diaradio/') &&
         !track.scPermalink.includes('/sets/') &&
         !track.scPermalink.includes('/likes') &&
         !track.scPermalink.includes('/reposts')
 
-      const hasTrackId = typeof track.track_id === 'number' && track.track_id > 0;
+      const hasTrackId = typeof track.track_id === 'number' && track.track_id > 0
 
-
-      // ⬇️ TEMPORARY PATCH UNTIL SCRAPER IS FIXED
-      // This will skip tracks with known broken mp3 URLs
-      const knownBroken = track.mp3?.includes('1989571215-diaradio-gros-volume-sur-la-molle-chach-251224')
-
-      return isValidPermalink && hasTrackId && !knownBroken;
-
+      return validPermalink && hasTrackId
     })
 
-    items.value = filtered
-    console.log(`✅ Loaded ${filtered.length} valid episodes`)
+    items.value = filtered.map(item => ({
+  ...item,
+  cover: typeof item.cover === 'object' ? item.cover.url : item.cover
+}))
+
+    console.log(`✅ Loaded ${filtered.length} valid episodes from Payload`)
   } catch (err) {
-    console.error('Failed to load or filter tracks:', err)
+    console.error('❌ Failed to load episodes from Payload:', err)
   }
 }
 
 
-
-
-
-function proxyUrlFromTrackId(id) {
-  return `https://stream.diaradio.live/stream/${id}`;
-}
-
-function togglePodcast(podcast) {
-  if (!podcast.track_id) {
-    console.warn('⚠️ Missing track_id for', podcast.title);
-    return;
-  }
-
-  const streamUrl = proxyUrlFromTrackId(podcast.track_id);
-
-  setAndPlay({
-  src: streamUrl,
-  title: podcast.title,
-  mode: 'podcast',
-  cover: podcast.cover || '/img/fallback-live.jpg',
-  genres: podcast.genres || []
-});
-}
-
-onMounted(fetchLocalTracks);
+onMounted(fetchEpisodesFromAPI)
 </script>
 
 <style scoped>
