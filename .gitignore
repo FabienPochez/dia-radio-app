@@ -6,3 +6,4 @@ scraper
 .vscode/
 .env
 .DS_Store
+token-cache.json
