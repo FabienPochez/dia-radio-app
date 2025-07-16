@@ -69,7 +69,14 @@ h1, h2, h3, h4, h5, h6, nav, button {
   opacity: 0;
 }
 
-/* hide the DrawerContent after pseudo element */
+/* Drawer shadcn */
+
+[data-vaul-drawer][data-vaul-drawer-direction="bottom"] {
+  max-height: 100vh !important;
+  margin-top: 0 !important;
+}
+
+
 
 /*
   ---break---

@@ -1,5 +1,5 @@
 <template>
-  <DrawerContent class="rounded-t-xl  mx-auto w-full max-w-none bg-neutral-900 text-white px-4 pt-3 pb-7 h-auto bottom-0 mt-24">
+  <DrawerContent class="rounded-t-xl  mx-auto w-full max-w-none bg-neutral-900 text-white px-4 pt-3 pb-7 h-auto bottom-0">
     <!-- Header -->
     <div class="flex justify-between items-center mb-4 mt-4">
       <h2 class="text-xl font-semibold font-sans">Now Playing</h2>
@@ -35,7 +35,7 @@
 
     <!-- Controls -->
     <DrawerFooter>
-      <GlobalPlayerControls class="mt-6" />
+      <GlobalPlayerControls class="my-6" />
     </DrawerFooter>
   </DrawerContent>
 </template>
