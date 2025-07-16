@@ -1,47 +1,49 @@
 <template>
-  <div class="w-full">
-    <div class="border-b border-pink  text-white overflow-hidden relative mb-3">
-      <!-- Image wrapper with 4:3 ratio -->
-      <div class="relative aspect-3/2 w-full">
+  <Card class="w-full text-white rounded-none bg-transparent border-b border-t-0 border-r-0 border-l-0 border-pink py-0 gap-0">
+    <CardContent class="p-0">
+      <!-- Image with play button -->
+      <div class="relative aspect-3/2 w-full overflow-hidden rounded-lg">
         <img
           :src="image"
           :alt="title"
-          class="object-cover rounded-lg w-full h-full"
+          class="object-cover w-full h-full"
         />
-        <!-- Play button -->
         <PlayPauseButton
           class="absolute bottom-0 left-0"
           :isPlaying="isPlaying"
           :onToggle="toggle"
         />
       </div>
-
+     <CardDescription v-if="publishedAt" class="pt-3">
+        {{ publishedAt }}
+      </CardDescription>
       <!-- Title -->
-      <div class="pt-5">
-        <h3 class="uppercase font-semibold">
-          {{ title }}
-        </h3>
-        <!-- Optional subtitle or date can be added here later -->
+        
+      <div class=" pt-3">
+        
+        <h3 class="uppercase font-semibold">{{ title }}</h3>
       </div>
-      <!-- genres -->
-       <div class="pt-7 pb-5">
-        <Badge
-  v-for="genre in genres"
-  :key="genre"
-  variant="genre"
-  class="mr-2"
->
-  {{ genre }}
-</Badge>
 
-       </div>
-    </div>
-  </div>
+      <!-- Genres -->
+      <div class="pt-5 pb-2">
+        <Badge
+          v-for="genre in genres"
+          :key="genre"
+          variant="genre"
+          class="mr-2"
+        >
+          {{ genre }}
+        </Badge>
+      </div>
+    </CardContent>
+  </Card>
 </template>
 
 <script setup>
+
 import PlayPauseButton from '@/components/player/PlayPauseButton.vue'
 import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription } from '@/components/ui/card'
 
 
 defineProps({
@@ -53,5 +55,10 @@ defineProps({
     type: Array,
     default: () => [],
   },
+  publishedAt: {
+    type: String,
+    default: null,
+  },
 })
+
 </script>

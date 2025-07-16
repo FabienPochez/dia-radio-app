@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-[60px] bg-neutral-900 text-white rounded-t-xl overflow-hidden flex items-center gap-3 pr-5">
+  <div class="w-full h-[60px] bg-neutral-900 text-white rounded-t-xl overflow-hidden flex items-center gap-0 pr-5">
     <!-- Cover -->
     <CoverImage :src="current.mode === 'live' ? liveMeta.cover : current.cover || '/img/fallback-live.jpg'" />
     <!-- Play / Pause -->
@@ -17,21 +17,21 @@
       @seek="onSliderChange"
     />
     <!-- Drawer Toggle Button -->
-    <button
-      @click="showDrawer = true"
-      class="ml-auto p-2 focus:outline-hidden"
-    >
-    <ChevronUp class="w-8 h-8 text-white" />
-    </button>
+    <!-- Drawer Toggle Button (must stay in layout for proper placement) -->
+    <Drawer v-model:open="showDrawer" direction="bottom">
+      <DrawerTrigger as-child>
+        <button class="ml-auto p-2 focus:outline-hidden">
+          <ChevronUp class="w-8 h-8 text-white" />
+        </button>
+      </DrawerTrigger>
+      <!-- Now Playing Drawer (content imported separately) -->
+      <NowPlayingDrawer v-model:open="showDrawer" />
+    </Drawer>
 
 
     
   </div>
-<Drawer v-model:open="showDrawer" direction="bottom">
-  <DrawerContent class="bg-neutral-900 rounded-t-xl shadow-xl w-full max-h-[90vh] overflow-y-auto">
-    <NowPlayingDrawer v-model:open="showDrawer" />
-  </DrawerContent>
-</Drawer>
+
 
   <audio ref="audioRef" :src="current.src" preload="none" class="hidden" />
 </template>
@@ -48,18 +48,15 @@ import { ChevronUp } from 'lucide-vue-next'
 import NowPlayingDrawer from '@/components/layout/NowPlayingDrawer.vue'
 import {
   Drawer,
-  DrawerContent
+  DrawerContent,
+  DrawerTrigger
 } from '@/components/ui/drawer'
-
-
-
 
 const { current, isPlaying, pause, setAndPlay } = usePlayer()
 
 const showDrawer = ref(false)
 const drawerHeight = ref('auto')
 const drawerContentRef = ref(null)
-
 
 watch(showDrawer, (val) => {
   if (val && drawerContentRef.value) {
@@ -119,11 +116,13 @@ function togglePodcastPlayback() {
     pause()
   } else {
     setAndPlay({
-      src: current.src,
-      title: current.title,
-      mode: 'podcast',
-      cover: current.cover
-    })
+  src: current.src,
+  title: current.title,
+  mode: 'podcast',
+  cover: current.cover,
+  genres: current.genres  // must be passed here
+})
+   
     updateMediaSession(current.title, 'Podcast Episode', current.cover)
   }
 }
@@ -184,4 +183,3 @@ function updateMediaSession(title, artist, artworkUrl) {
   }
 }
 </script>
-

@@ -71,7 +71,7 @@ export function usePlayer() {
     })
   }
 
-  async function setSource({ src, title, mode = 'podcast', cover = '', genres = [] }) {
+  async function setSource({ src, title, mode = 'podcast', cover = '', genres }) {
     const isNewStream = audioRef.value.src !== src || state.current.mode !== mode
 
     if (isNewStream) {
@@ -90,8 +90,10 @@ export function usePlayer() {
     state.current.src = src
     state.current.mode = mode
     state.current.cover = cover
-    state.current.genres = genres
 
+    if (Array.isArray(genres)) {
+      state.current.genres = genres
+    }
 
     state.isPlaying = false
     isPlayingRef.value = false
@@ -112,16 +114,15 @@ export function usePlayer() {
   }
 
   function pause() {
-  if (audioRef.value) {
-    logPlayerEvent('User tapped PAUSE')
-    audioRef.value.pause()
-    state.isPlaying = false
-    isPlayingRef.value = false
+    if (audioRef.value) {
+      logPlayerEvent('User tapped PAUSE')
+      audioRef.value.pause()
+      state.isPlaying = false
+      isPlayingRef.value = false
+    }
   }
-}
 
-
-  async function setAndPlay({ src, title, mode = 'podcast', cover = '', genres = [] }) {
+  async function setAndPlay({ src, title, mode = 'podcast', cover = '', genres }) {
     await setSource({ src, title, mode, cover, genres })
     await play()
   }
@@ -197,7 +198,6 @@ function startPlaybackMonitor() {
     }
   }, 15000)
 }
-
 
 function stopPlaybackMonitor() {
   clearInterval(playbackInterval)

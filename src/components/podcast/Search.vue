@@ -35,6 +35,7 @@
         :isPlaying="isPlaying && current.src === proxyUrlFromTrackId(item.track_id)"
         :toggle="() => togglePodcast(item)"
         :genres="(item.genres || []).map(g => typeof g === 'string' ? g : g.name)"
+        :publishedAt="item.formattedDate"
       />
     </div>
 
@@ -71,22 +72,6 @@ const filteredItems = computed(() => {
   )
 })
 
-const inputStyles = {
-  backgroundColor: '#171717',
-  color: '#f3f4f6',
-  '--n-color': 'transparent',
-  '--n-color-focus': 'transparent',
-  '--n-color-active': 'transparent',
-  '--n-border': '1px solid #f3f4f6',
-  '--n-border-hover': '1px solid #ffc8c8',
-  '--n-border-focus': '1px solid #ffc8c8',
-  '--n-border-active': '1px solid #ffc8c8',
-  '--n-box-shadow-focus': 'none',
-  '--n-text-color': '#fff',
-  '--n-placeholder-color': 'rgba(255,255,255,0.4)',
-  '--n-clear-size': '24px'
-}
-
 function proxyUrlFromTrackId(id) {
   return `https://stream.diaradio.live/stream/${id}`
 }
@@ -120,40 +105,38 @@ async function fetchEpisodesFromAPI() {
     const episodes = await res.json()
 
     const filtered = episodes.filter(track => {
-      const validPermalink =
-        track.scPermalink &&
-        track.scPermalink.startsWith('/diaradio/') &&
-        !track.scPermalink.includes('/sets/') &&
-        !track.scPermalink.includes('/likes') &&
-        !track.scPermalink.includes('/reposts')
+      const validPermalink = true // Assuming all tracks have valid permalinks for simplicity
 
       const hasTrackId = typeof track.track_id === 'number' && track.track_id > 0
 
       return validPermalink && hasTrackId
     })
 
-    items.value = filtered.map(item => ({
-  ...item,
-  cover: typeof item.cover === 'object' ? item.cover.url : item.cover
-}))
+    items.value = filtered.map(track => {
+      const publishedAt = track.publishedAt
+      const formattedDate = publishedAt
+        ? new Date(publishedAt).toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'numeric',
+            year: 'numeric',
+          }).replace(/\//g, '.')
+        : null
 
-    console.log(`✅ Loaded ${filtered.length} valid episodes from Payload`)
+      return {
+        title: track.title || 'Untitled',
+        description: track.description || '',
+        track_id: track.track_id,
+        cover: typeof track.cover === 'object' ? track.cover.url : track.cover || track.show?.cover?.url || '/img/fallback-live.jpg',
+        genres: (track.genres || []).map(g => typeof g === 'string' ? g : g.name),
+        formattedDate,
+      }
+    })
+
+    console.log(`✅ Loaded ${items.value.length} valid episodes from Payload`)
   } catch (err) {
     console.error('❌ Failed to load episodes from Payload:', err)
   }
 }
 
-
 onMounted(fetchEpisodesFromAPI)
 </script>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
