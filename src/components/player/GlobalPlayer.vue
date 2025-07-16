@@ -19,6 +19,7 @@
     <!-- Drawer Toggle Button -->
     <!-- Drawer Toggle Button (must stay in layout for proper placement) -->
     <Drawer v-model:open="showDrawer" direction="bottom">
+      <DrawerOverlay />
       <DrawerTrigger as-child>
         <button class="ml-auto p-2 focus:outline-hidden">
           <ChevronUp class="w-8 h-8 text-white" />
